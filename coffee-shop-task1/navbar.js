@@ -1,8 +1,11 @@
+// Navbar — sticky nav with a mobile toggle. Desktop link list
+// and mobile panel are separate markup blocks so each is
+// styled independently at its own breakpoint.
 function Navbar() {
   return `
     <header class="navbar">
       <div class="wrap">
-        <a href="#top" class="navbar__logo">Kettle &amp; Bean</a>
+        <a href="#top" class="navbar__logo">Mahrukh's &amp; Bean</a>
         <nav>
           <ul class="navbar__links">
             <li><a href="#menu">Menu</a></li>
