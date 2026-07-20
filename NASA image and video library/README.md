@@ -4,7 +4,7 @@ A small static app that searches NASA's public image archive live, with visible 
 
 **Live data source:** [images-api.nasa.gov](https://images.nasa.gov) — NASA's Image and Video Library API. No API key required.
 
-# lIVE WEBSITE
+# LIVE WEBSITE
 
 https://mahhrukhh.github.io/NASA-image-and-video-library/
 
