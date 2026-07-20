@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahrukh (ARCHIEVE) // NASA Image &amp; Video Library</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1321;
+    --surface:#161F38;
+    --surface-raised:#1C2645;
+    --accent:#E3A857;
+    --accent-dim:#8A6A3A;
+    --text:#EDEAE0;
+    --text-muted:#7B85A8;
+    --error:#D9694F;
+    --line:#2A3457;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(227,168,87,0.08), transparent),
+      radial-gradient(ellipse 700px 600px at 100% 20%, rgba(123,133,168,0.06), transparent),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    min-height:100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  a{color:var(--accent);}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px 80px;}
+
+  /* ---------- Header ---------- */
+  header{padding:56px 0 36px; border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:7px; height:7px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 8px var(--accent);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(34px, 5vw, 56px);
+    line-height:1.05;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  h1 em{font-style:italic; font-weight:500; color:var(--accent);}
+
+  .sub{
+    color:var(--text-muted);
+    font-size:15.5px;
+    max-width:560px;
+    line-height:1.6;
+    margin:0;
+  }
+
+  /* ---------- Query panel ---------- */
+  .query-panel{
+    margin-top:34px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+  }
+  .query-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+  }
+  #search-field{flex:1; min-width:220px;}
+  input[type="text"], select{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:12px 14px;
+    border-radius:var(--radius);
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type="text"]::placeholder{color:#4A5378;}
+  input[type="text"]:focus, select:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(227,168,87,0.15);
+  }
+  select{appearance:none; cursor:pointer; min-width:170px;}
+
+  .meta-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .meta-row span.count{color:var(--accent);}
+
+  /* ---------- Status states ---------- */
+  .status{
+    margin-top:56px;
+    padding:50px 20px;
+    text-align:center;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--surface);
+  }
+  .status .glyph{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:inline-block;
+  }
+  .status.loading .glyph{color:var(--accent);}
+  .status.error .glyph{color:var(--error);}
+  .status h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:22px;
+    margin:0 0 8px;
+  }
+  .status p{color:var(--text-muted); font-size:14px; max-width:420px; margin:0 auto; line-height:1.6;}
+
+  .scanbar{
+    position:relative;
+    height:2px;
+    width:220px;
+    background:var(--line);
+    margin:0 auto 22px;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .scanbar::after{
+    content:'';
+    position:absolute;
+    top:0; left:-40%;
+    width:40%; height:100%;
+    background:linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation:sweep 1.3s ease-in-out infinite;
+  }
+  @keyframes sweep{
+    0%{left:-40%;}
+    100%{left:100%;}
+  }
+
+  .retry-btn{
+    margin-top:18px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background:transparent;
+    border:1px solid var(--error);
+    color:var(--error);
+    padding:10px 22px;
+    border-radius:var(--radius);
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .retry-btn:hover{background:var(--error); color:var(--bg);}
+  .retry-btn:focus-visible{outline:2px solid var(--error); outline-offset:2px;}
+
+  /* ---------- Results grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:22px;
+    margin-top:40px;
+  }
+
+  .plate{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    text-decoration:none;
+    color:var(--text);
+    position:relative;
+    transition:border-color .18s ease, transform .18s ease;
+  }
+  .plate:hover, .plate:focus-visible{
+    border-color:var(--accent-dim);
+    transform:translateY(-3px);
+  }
+  .plate:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .plate .notch{
+    position:absolute;
+    top:0; right:0;
+    width:0; height:0;
+    border-style:solid;
+    border-width:0 22px 22px 0;
+    border-color:transparent var(--bg) transparent transparent;
+    z-index:2;
+  }
+  .plate .notch::after{
+    content:'';
+    position:absolute;
+    top:1px; right:-21px;
+    width:0; height:0;
+    border-style:solid;
+    border-width:0 20px 20px 0;
+    border-color:transparent var(--surface) transparent transparent;
+  }
+
+  .plate-img-wrap{
+    aspect-ratio:4/3;
+    background:#0A0E1C;
+    overflow:hidden;
+  }
+  .plate-img-wrap img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .35s ease;
+  }
+  .plate:hover .plate-img-wrap img{transform:scale(1.045);}
+
+  .plate-body{padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .plate-title{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:15.5px;
+    line-height:1.32;
+    margin:0;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .plate-meta{
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.03em;
+    color:var(--text-muted);
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
+  .plate-meta .id{color:var(--accent-dim);}
+
+  /* ---------- Empty state ---------- */
+  .empty{
+    margin-top:56px;
+    padding:50px 20px;
+    text-align:center;
+    border:1px dashed var(--line);
+    border-radius:var(--radius);
+  }
+  .empty h3{font-family:'Fraunces', serif; font-weight:500; font-size:20px; margin:0 0 8px;}
+  .empty p{color:var(--text-muted); font-size:14px; margin:0;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (max-width: 560px){
+    header{padding:40px 0 28px;}
+    .wrap{padding:0 18px 60px;}
+    .query-row{flex-direction:column;}
+    select{min-width:0; width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">NASA Open Data · Image &amp; Video Library</div>
+    <h1>Search the <em>archive.</em></h1>
+    <p class="sub">A live index of NASA's public image collection — nebulae, launches, planetary surfaces, crew photography. Query it below.</p>
+
+    <div class="query-panel">
+      <div class="query-row">
+        <div class="field" id="search-field">
+          <label for="q">Query</label>
+          <input type="text" id="q" placeholder="e.g. nebula, apollo 11, mars rover" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="center">NASA Center</label>
+          <select id="center">
+            <option value="">All centers</option>
+            <option value="JPL">JPL</option>
+            <option value="JSC">Johnson (JSC)</option>
+            <option value="KSC">Kennedy (KSC)</option>
+            <option value="GSFC">Goddard (GSFC)</option>
+            <option value="MSFC">Marshall (MSFC)</option>
+            <option value="ARC">Ames (ARC)</option>
+            <option value="HQ">HQ</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="year">Year</label>
+          <select id="year"><option value="">Any year</option></select>
+        </div>
+      </div>
+      <div class="meta-row">
+        <span id="status-line">Standing by</span>
+        <span id="result-count"></span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-region" aria-live="polite">
+    <!-- populated by JS -->
+  </main>
+
+  <footer>
+    <span>Data via <a href="https://images.nasa.gov" target="_blank" rel="noopener">images.nasa.gov</a> public API</span>
+    <span>No API key required</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const API = "https://images-api.nasa.gov/search";
+  const qInput = document.getElementById('q');
+  const centerSelect = document.getElementById('center');
+  const yearSelect = document.getElementById('year');
+  const main = document.getElementById('main-region');
+  const statusLine = document.getElementById('status-line');
+  const resultCount = document.getElementById('result-count');
+
+  // populate year filter: current year back to 1958 (NASA founding)
+  const CURRENT_YEAR = new Date().getFullYear();
+  for (let y = CURRENT_YEAR; y >= 1958; y--) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
+
+  let debounceTimer = null;
+  let requestToken = 0; // guards against out-of-order responses
+
+  function renderLoading(){
+    main.innerHTML = `
+      <div class="status loading">
+        <div class="scanbar"></div>
+        <span class="glyph">Receiving transmission</span>
+        <h3>Querying the archive…</h3>
+        <p>Fetching results from images.nasa.gov. This usually takes a second.</p>
+      </div>`;
+    statusLine.textContent = 'Transmitting…';
+    resultCount.textContent = '';
+  }
+
+  function renderError(message, onRetry){
+    main.innerHTML = `
+      <div class="status error">
+        <span class="glyph">⚠ Signal lost</span>
+        <h3>The archive didn't respond.</h3>
+        <p>${message}</p>
+        <button class="retry-btn" id="retry-btn" type="button">Retry query</button>
+      </div>`;
+    statusLine.textContent = 'Signal lost';
+    resultCount.textContent = '';
+    document.getElementById('retry-btn').addEventListener('click', onRetry);
+  }
+
+  function renderEmpty(term){
+    main.innerHTML = `
+      <div class="empty">
+        <h3>No plates match "${escapeHtml(term)}"</h3>
+        <p>Try a broader term — "earth", "saturn", "spacewalk" — or clear the center and year filters.</p>
+      </div>`;
+    statusLine.textContent = 'No matches';
+    resultCount.textContent = '';
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatDate(iso){
+    if(!iso) return 'Date unknown';
+    const d = new Date(iso);
+    if (isNaN(d)) return 'Date unknown';
+    return d.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+  }
+
+  function renderResults(items){
+    if (!items.length){
+      renderEmpty(qInput.value.trim() || '(default query)');
+      return;
+    }
+
+    resultCount.innerHTML = `<span class="count">${items.length}</span> plate${items.length === 1 ? '' : 's'} retrieved`;
+    statusLine.textContent = 'Transmission complete';
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    items.forEach(item => {
+      const data = item.data && item.data[0] ? item.data[0] : {};
+      const thumb = (item.links || []).find(l => l.rel === 'preview');
+      const nasaId = data.nasa_id || 'UNKNOWN-ID';
+      const title = data.title || 'Untitled';
+      const center = data.center || '—';
+      const date = formatDate(data.date_created);
+      const detailUrl = `https://images.nasa.gov/details/${encodeURIComponent(nasaId)}`;
+
+      const card = document.createElement('a');
+      card.className = 'plate';
+      card.href = detailUrl;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.innerHTML = `
+        <span class="notch" aria-hidden="true"></span>
+        <div class="plate-img-wrap">
+          ${thumb ? `<img src="${thumb.href}" alt="${escapeHtml(title)}" loading="lazy">` : ''}
+        </div>
+        <div class="plate-body">
+          <p class="plate-title">${escapeHtml(title)}</p>
+          <div class="plate-meta">
+            <span class="id">${escapeHtml(nasaId)}</span>
+            <span>${escapeHtml(center)} · ${date}</span>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    main.innerHTML = '';
+    main.appendChild(grid);
+  }
+
+  function buildUrl(){
+    const params = new URLSearchParams();
+    const term = qInput.value.trim();
+    params.set('q', term || 'earth');
+    params.set('media_type', 'image');
+    if (centerSelect.value) params.set('center', centerSelect.value);
+    if (yearSelect.value){
+      params.set('year_start', yearSelect.value);
+      params.set('year_end', yearSelect.value);
+    }
+    return `${API}?${params.toString()}`;
+  }
+
+  async function runQuery(){
+    const token = ++requestToken;
+    renderLoading();
+
+    let res;
+    try {
+      res = await fetch(buildUrl());
+    } catch (networkErr) {
+      if (token !== requestToken) return;
+      renderError('Couldn\'t reach images-api.nasa.gov — check your connection and try again.', runQuery);
+      return;
+    }
+
+    if (token !== requestToken) return;
+
+    if (!res.ok){
+      renderError(`The API returned an error (status ${res.status}). It may be temporarily unavailable.`, runQuery);
+      return;
+    }
+
+    let json;
+    try {
+      json = await res.json();
+    } catch (parseErr) {
+      if (token !== requestToken) return;
+      renderError('The archive sent back something we couldn\'t read. Try again in a moment.', runQuery);
+      return;
+    }
+
+    if (token !== requestToken) return;
+
+    const items = (json.collection && json.collection.items) || [];
+    renderResults(items.filter(it => it.data && it.data[0]));
+  }
+
+  function scheduleQuery(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runQuery, 420);
+  }
+
+  qInput.addEventListener('input', scheduleQuery);
+  centerSelect.addEventListener('change', runQuery);
+  yearSelect.addEventListener('change', runQuery);
+
+  // initial load
+  runQuery();
+})();
+</script>
+</body>
+</html>
