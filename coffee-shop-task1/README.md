@@ -7,7 +7,7 @@ build anything feature-heavy.
 
 ## Live Demo
 
-[Add your deployed URL here once published]
+https://mahhrukhh.github.io/coffee-shop/
 
 ## Framework Choice
 
