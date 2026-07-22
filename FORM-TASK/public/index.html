@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Event Registration Form</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="card">
+  <h1>My Event Registration</h1>
+  <p class="subtitle">Fill in your details below. Fields marked with * are required.</p>
+
+  <form id="regForm" novalidate>
+
+    <div class="field">
+      <label for="fullName">Full Name *</label>
+      <input type="text" id="fullName" name="fullName" placeholder="e.g. Mahrukh Owais" />
+      <span class="error" id="err-fullName"></span>
+    </div>
+
+    <div class="field">
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" placeholder="maharukhh10@gmail.com" />
+      <span class="error" id="err-email"></span>
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone Number *</label>
+      <input type="tel" id="phone" name="phone" placeholder="03001234567" />
+      <span class="error" id="err-phone"></span>
+    </div>
+
+    <div class="field">
+      <label for="department">Department *</label>
+      <select id="department" name="department">
+        <option value="">-- Select a department --</option>
+        <option value="engineering">Engineering</option>
+        <option value="design">Design</option>
+        <option value="marketing">Marketing</option>
+        <option value="sales">Sales</option>
+        <option value="support">Support</option>
+      </select>
+      <span class="error" id="err-department"></span>
+    </div>
+
+    <div class="field">
+      <label for="eventDate">Preferred Event Date *</label>
+      <input type="date" id="eventDate" name="eventDate" />
+      <span class="error" id="err-eventDate"></span>
+    </div>
+
+    <div class="field">
+      <label for="photo">Profile Photo (JPG/PNG/WEBP, max 2MB) *</label>
+      <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" />
+      <span class="error" id="err-photo"></span>
+    </div>
+
+    <div class="field">
+      <label for="bio">Short Bio *</label>
+      <textarea id="bio" name="bio" rows="4" placeholder="Tell us a bit about yourself (10-300 characters)"></textarea>
+      <span class="error" id="err-bio"></span>
+    </div>
+
+    <button type="submit" id="submitBtn">
+      <span id="btnText">Register</span>
+      <span id="spinner" class="spinner hidden"></span>
+    </button>
+  </form>
+</div>
+
+<div id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
