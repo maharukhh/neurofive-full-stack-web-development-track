@@ -1,0 +1,12 @@
+{
+  "name": "week3-task2-global-state",
+  "version": "1.0.0",
+  "description": "Global state, data fetching patterns, skeleton loaders and empty states demo (vanilla JS)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
