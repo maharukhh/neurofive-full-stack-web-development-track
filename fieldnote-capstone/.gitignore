@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.local
+backend/fieldnote.db
+backend/fieldnote.db-*
+.env
+.env.local
